@@ -1,0 +1,259 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+
+<style>
+  .container {
+    position: relative;
+  }
+
+  .image {
+    display: block;
+  }
+
+  .overlay {
+    position: absolute;
+    bottom: 10;
+    left: 100%;
+    right: 0;
+    background-color: #ffffff;
+    overflow: hidden;
+    width: 0;
+    height: 100%;
+    transition: 0.5s ease;
+  }
+
+  .container:hover .overlay {
+    width: 100%;
+    left: 0;
+  }
+
+  .text {
+    color: rgb(0, 0, 0);
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+  }
+</style>
+
+<img
+  src="{% static 'images/home3.avif' %}"
+  alt=""
+  height="300px"
+  width="100%"
+/>
+<br />
+<br />
+<marquee behavior="scroll" direction="left">
+
+  <span style="font-size: large;">
+
+    {{allNotice}}
+  </span>
+
+
+  
+  </marquee>
+
+<br />
+<br />
+
+<div class="row" style="margin: 0px 1px 0px 1px">
+  {% for cat in category %}
+  <div class="container col-md-2">
+    <div class="ui card">
+      <div class="ui slide masked reveal image">
+        <img src="{{cat.image.url}}" class="image" />
+      </div>
+      <div class="overlay">
+        <a href="">
+          <a class="text">{{cat.name}}</a>
+        </a>
+      </div>
+
+      <div class="content">
+        <a class="header" style="text-align: center">{{cat.name}}</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<br />
+<br />
+<div
+  class="container"
+  style="
+    width: 100%;
+    height: 15px;
+    border-bottom: 1px solid rgb(78, 76, 76);
+    text-align: center;
+  "
+>
+  <span
+    style="
+      font-size: 40px;
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS',
+        sans-serif;
+      background-color: #ffffff;
+      padding: 0 10px;
+    "
+  >
+    Glassify {{dayName}} Exclusive
+  </span>
+</div>
+<br />
+<br />
+
+<div class="row" style="margin: 0px 1px 0px 1px">
+  {% for glass in allProds2 %}
+  <div class="container col-md-2">
+    <div class="ui card">
+      <div class="ui slide masked reveal image">
+        <img src="{{glass.image1.url}}" class="image" />
+      </div>
+
+      <div class="overlay">
+        <a href="">
+          {% if glass.image2 %}
+          <a
+            class="text"
+            href="{% url 'display-product' glass.id glass.title|slugify %}"
+            ><img
+              src="{{glass.image2.url}}"
+              height="200px"
+              width="250px"
+              class="image"
+          /></a>
+          {% else %} {{glass.title}} {% endif %}
+        </a>
+      </div>
+
+      <div class="content">
+        <a class="header" style="text-align: center">
+          {% if glass.discount > 0 %}
+
+          <h3>
+            TK
+            <s style="color: red"> {{glass.price}} </s>
+            &nbsp; {{glass.code|slice:"20:"}}
+          </h3>
+
+          {% else %}
+          <h3>TK {{glass.price}}</h3>
+          {% endif %}
+        </a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<hr />
+
+{% include 'Slide.html' %}
+<br />
+<br />
+
+<div
+  class="container"
+  style="
+    width: 100%;
+    height: 15px;
+    border-bottom: 1px solid rgb(78, 76, 76);
+    text-align: center;
+  "
+>
+  <span style="font-size: 40px; background-color: #ffffff; padding: 0 10px">
+    Try This Glasses on Your Face
+  </span>
+</div>
+
+<br />
+<br />
+<div class="row" style="margin: 0px 1px 0px 1px">
+  {% for product in allProds %} {% if forloop.counter == 7 %}
+
+  <img
+    src="{% static 'images/home5.gif' %}"
+    alt=""
+    height="350px"
+    width="100%"
+    style="margin-top: 10px"
+  />
+  <br />
+
+  {% endif %} {% if forloop.counter0 == 12 %}
+
+  <img
+    src="{% static 'images/home6.gif' %}"
+    alt=""
+    height="250px"
+    width="100%"
+    style="margin-top: 10px"
+  />
+  <br />
+  <img
+    src="{% static 'images/home1.gif' %}"
+    alt=""
+    height="500px"
+    width="100%"
+    style="margin-top: 10px"
+  />
+  <br />
+
+  {% endif %}
+
+  <div class="container col-md-2">
+    <div class="ui card mt-4">
+      <a
+        class="image1"
+        href="{% url 'show-product' product.id product.title|slugify %}"
+      >
+        <img src="{{product.image1.url}}" height="120px" width="100%" />
+      </a>
+      <div class="content">
+        <a
+          class="header"
+          href="{% url 'show-product' product.id product.title|slugify %}"
+          >{{product.title|slice:"0:20"}}...</a
+        >
+        <div class="meta">
+          <span class="date">{{product.discount}}% Discount</span>
+        </div>
+        <div class="description">
+          {% if product.discount > 0 %}
+
+          <h3>
+            TK
+            <s style="color: red"> {{product.price}} </s>
+            &nbsp; {{product.code|slice:"20:"}}
+          </h3>
+
+          {% else %}
+          <h3>TK {{product.price}}</h3>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endfor %}
+</div>
+
+<br />
+<img
+  src="{% static 'images/home4.webp' %}"
+  alt=""
+  height="350px"
+  width="100%"
+/>
+<br />
+<br />
+<hr />
+<img src="{% static 'images/home2.gif' %}" alt="" height="350px" width="100%" />
+
+{% endblock content %}

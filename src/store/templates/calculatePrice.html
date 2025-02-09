@@ -1,0 +1,156 @@
+{% extends 'base.html' %} {% block content %}
+{% load static %}
+<div class="container">
+  <h1>Cart items</h1>
+  <p>Products You Added to Cart Will Appear Here.</p>
+  <hr />
+  <div class="row">
+    <div class="col-sm-8">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+
+            <div style="text-align: center" class="col-sm-1">
+            <h3>Serial</h3>
+            <hr>
+            {% for cart in cartists %}
+            <h4>{{forloop.counter}}</h4>
+            {% endfor %}
+
+            </div>
+
+            <div style="text-align: center" class="col-sm-6">
+              <h3>Item Name</h3>
+              <hr />
+
+              {% for cart in cartists %}
+              <h4>
+                <a href="{% url 'show-product' cart.id cart.title|slugify %}">
+
+                  {{cart.title|slice:"0:30"}}
+                </a>
+                <a href="{% url 'cross-product' cart.id  %}" style="color: red;">
+                  <i class="trash icon"></i>
+                </a>
+              </h4>
+              {% endfor %}
+
+
+
+            </div>
+
+            <div style="text-align: center" class="col-sm-2">
+              <h3>Quantity</h3>
+              <hr />
+              {% for cart in cartists %}
+              <p>
+                <input
+                  type="text"
+                  value="1"
+                  max="10"
+                  name="q-form"
+                  id="q-{{cart.id}}-{{cart.code|slice:'20:'}}"
+                  class="form-control qinput"
+                />
+              </p>
+              {% endfor %}
+            </div>
+
+
+            <div style="text-align: center" class="col-sm-3">
+              <h3>Price</h3>
+              <hr />
+              {% for cart in cartists %}
+              <h4 class="price-class" id="p-{{cart.id}}">
+                {{cart.code|slice:"20:"}}
+              </h4>
+              {% endfor %}
+            </div>
+          </div>
+
+
+
+
+          <hr />
+          <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+              <h1 style="text-align: center">Total</h1>
+            </div>
+            <div class="col-sm-3 p-{{price}}">
+              <h1 id="total-price" style="text-align: center">{{price}}</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+
+      <img
+      src="{% static 'images/cart.gif' %}"
+      alt=""
+      height="400px"
+      width="110%"
+    />
+    </div>
+  </div>
+  <hr />
+
+  <h1>
+    <form
+      action="{% url 'check-out' %}"
+      class="ui form"
+      enctype="multipart/form-data"
+      method="POST"
+      id="cart-form"
+    >
+      {% csrf_token %}
+
+      <button type="submit" id="totalPriceID" name="totalPrice" value="{{price}}" class="ui primary button">
+        Check Out
+      </button>
+    </form>
+  </h1>
+</div>
+
+{% endblock content %} {% block scripts %}
+<script>
+  $(document).ready(function () {
+    let totalPrice = $(`#total-price`).text();
+    console.log(totalPrice);
+
+    $(".qinput").change(function () {
+      let btnID = $(this).attr("id");
+      quantity = $(this).val();
+      let list = btnID.split("-");
+      var changedPrice = list[2] * quantity;
+      $(`#p-${list[1]}`).text(changedPrice);
+    });
+
+    $(".qinput").change(function () {
+      const quantity = Array.from(document.querySelectorAll(".qinput")).map(
+        (input) => input.value
+      );
+      const prices = Array.from(document.querySelectorAll(".qinput"));
+
+      var elements = [];
+
+      for (let i = 0; i < prices.length; i++) {
+        element = prices[i].id.split("-")[2];
+        elements.push(element);
+      }
+      console.log(elements);
+
+      let grandTotal = 0;
+      for (let i = 0; i < prices.length; i++) {
+        grandTotal += elements[i] * quantity[i];
+      }
+      $(`#total-price`).text(grandTotal);
+      $(`#totalPriceID`).click(function(){
+        $(this).prop('value', grandTotal);
+      })
+    });
+  });
+</script>
+
+{% endblock scripts %}

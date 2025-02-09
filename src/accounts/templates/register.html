@@ -1,0 +1,55 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container">
+  <form
+    class="form-group"
+    action="{% url 'register-account' %}"
+    method="POST"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title">
+          <h1>Signup</h1>
+          <p>Before You Signing Up -</p>
+          <ul>
+            <li>Make Sure to Give an Appropriate Email</li>
+          </ul>
+          <hr />
+          <div class="mt-2">
+            <label for="">Email:</label>
+            {{form.email}}
+          </div>
+          <div class="mt-2">
+            <label for="">Username:</label>
+            {{form.username}}
+          </div>
+
+          <div class="mt-2">
+            <label for="">Enter Password:</label>
+            {{form.password1}}
+          </div>
+          <div class="mt-2">
+            <label for="">Confirm Password:</label>
+            {{form.password2}}
+          </div>
+        </div>
+        <button type="submit" class="ui blue basic button">Register</button>
+        <a href="{% url 'home' %}">
+          <button type="button" class="ui blue basic button">
+            Back to Home
+          </button>
+        </a>
+      </div>
+    </div>
+  </form>
+  <p>Already Have an Account ? <a href="{% url 'login-account' %}">Login</a></p>
+</div>
+
+{% endblock content %} {% block scripts %}
+<script>
+  document.getElementById("id_password1").classList.add("form-control");
+  document.getElementById("id_password2").classList.add("form-control");
+</script>
+{% endblock scripts %}

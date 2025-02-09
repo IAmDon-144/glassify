@@ -1,0 +1,151 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-5">
+      <div class="ui card" style="width: 100%">
+        <div class="ui slide masked reveal image">
+          <img
+            src="{{glass.image1.url}}"
+            class="visible content"
+            style="height: 250px"
+          />
+
+          <img src="{{glass.image2.url}}" class="hidden content" style="height: 350px" />
+        </div>
+
+
+        <div class="extra content">
+          <div class="description">
+            {% if glass.discount > 0 %}
+
+            <h1>
+              TK
+              <s style="color: red"> {{glass.price}} </s>
+              &nbsp; {{glass.code|slice:"20:"}}
+            </h1>
+
+            {% else %}
+            <h1>TK {{glass.price}}</h1>
+            {% endif %}
+          </div>
+          <br />
+
+          <div class="row">
+            <div class="col-sm-3" >
+              <!-- --------------------like ---------------------------->
+              <form
+                action="{% url 'add-wishlist' %}"
+                class="ui form"
+                enctype="multipart/form-data"
+                method="POST"
+                id="like-form"
+              >
+                {% csrf_token %}
+
+                <div class="ui labeled button" tabindex="0">
+                  <div class="ui labeled button" tabindex="0">
+                    <button
+                      class="ui primary button like-btn"
+                      type="submit"
+                      name="like-btn"
+                      value="liking-system"
+                      id="like-{{glass.id}}-{{profile.id}}"
+                    >
+                      {% if profile not in glass.liked.all %} Like {% else %}
+                      Unlike {% endif %}
+                    </button>
+
+                    <a
+                      id="likesCount-{{glass.id}}"
+                      class="ui basic primary left pointing label"
+                    >
+                      {{glass.liked.count}}
+                    </a>
+                  </div>
+                </div>
+              </form>
+
+              <!-- --------------------like Close ---------------------------->
+            </div>
+
+            <div class="col-sm-4" style="margin: 0px 0px 0px -20px">
+              <!-- --------------------Cart  ---------------------------->
+
+              <form
+                action="{% url 'add-cart' %}"
+                class="ui form"
+                enctype="multipart/form-data"
+                method="POST"
+                id="cart-form"
+              >
+                {% csrf_token %}
+
+                <button
+                  class="ui primary button cart-btn"
+                  type="submit"
+                  name="cart-btn"
+                  value="cart-system"
+                  id="cart-{{glass.id}}-{{profile.id}}"
+                >
+                  {% if profile not in glass.cart.all %} Add to Cart {% else %}
+                  Remove Cart {% endif %}
+                </button>
+              </form>
+              <!-- --------------------cart Close ---------------------------->
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="col-sm-7">
+        <h1>People Also Check</h1>
+        <hr>
+
+        <div class="row" style="margin: 0px 1px 0px 1px">
+            {% for product in moreProducts %}
+            <div class="container col-md-4">
+              <div class="ui card mt-4">
+                <a
+                  class="image1"
+                  href="{% url 'display-product' product.id product.title|slugify %}"
+                >
+                  <img src="{{product.image1.url}}" height="120px" width="100%" />
+                </a>
+                <div class="content">
+                  <div class="meta">
+                    <span class="date">{{product.discount}}% Discount</span>
+                  </div>
+                  <div class="description">
+                    {% if product.discount > 0 %}
+        
+                    <h3>
+                      <s style="color: red"> TK {{product.price}} </s>
+                      &nbsp; {{product.code|slice:"20:"}}
+                    </h3>
+        
+                    {% else %}
+                    <h3>TK {{product.price}}</h3>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+            {% endfor %}
+          </div>
+
+    </div>
+
+  </div>
+
+
+</div>
+{% endblock content %} {% block scripts %}
+<script>
+  document.getElementById("id_comment-box").required = true;
+</script>
+{% include 'addWishlist.html' %} {% include 'addCartlist.html' %}
+ {% endblock scripts %}

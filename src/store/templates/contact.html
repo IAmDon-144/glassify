@@ -1,0 +1,29 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container">
+  <div class="jumbotron">
+    {% if status == "Closed" %}
+    <h1 class="display-4" style="color: red;">Shop {{status}}</h1>
+    {% else %}
+    <h1 class="display-4" style="color: green;">Shop {{status}}</h1>    
+    {% endif %}
+    <p class="lead">Please Let Us know What Kind of Help do You Want?</p>
+    <hr class="my-4" />
+    <p>Email Us For Any Quary , Paid Promotion or Advertisement!</p>
+    <h4>Email Adress - glassify@gmail.com</h4>
+
+    <p class="lead">
+      <a
+        target="_blank"
+        class="btn btn-primary btn-lg"
+        href="https://mail.google.com"
+        role="button"
+        >Send Email</a
+      >
+    </p>
+    <h3>Call - 01814210029</h3>
+    <h1 style="color: red;"> 9 AM to 9 PM</h1>
+  </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+
+<div class="container">
+  <h1>Check Out</h1>
+  <hr />
+  <img
+    src="{% static 'images/checkout.gif' %}"
+    alt=""
+    height="350px"
+    width="100%"
+  />
+
+  <h1>
+    Your Grand Total is only <span style="color: red">{{grandTotal}} </span> TK
+  </h1>
+
+  <button class="ui secondary button">BKASH</button>
+  <button class="ui secondary button">Bank Payment</button>
+  <button class="ui secondary button">Cash on Delivery</button>
+</div>
+
+{% endblock content %}

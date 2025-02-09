@@ -1,0 +1,20 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container">
+  <div class="jumbotron">
+    <h1 class="display-4">Hello {{request.user.username}}</h1>
+    <p class="lead">Please Let Us know What Kind of Help do You Want?</p>
+    <hr class="my-4" />
+    <p>Email Us For Any Quary , Paid Promotion or Advertisement!</p>
+    <p class="lead">
+      <a  target="_blank"
+        class="btn btn-primary btn-lg"
+        href="https://mail.google.com"
+        role="button"
+        >Send Email</a
+      >
+    </p>
+  </div>
+</div>
+
+{% endblock content %}

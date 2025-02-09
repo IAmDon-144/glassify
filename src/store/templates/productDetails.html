@@ -1,0 +1,276 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-7">
+      <div class="ui card" style="width: 100%">
+        <div class="ui slide masked reveal image">
+          <img
+            src="{{glass.image1.url}}"
+            class="visible content"
+            style="height: 350px"
+          />
+
+          <img src="{{image2}}" class="hidden content" style="height: 600px" />
+        </div>
+        <div class="content">
+          <a class="header">{{glass.title}}</a>
+          <div class="meta">
+            <h2>
+              <span style="color: red" class="date"
+                >{{glass.discount}}% Discount</span
+              >
+            </h2>
+          </div>
+        </div>
+        <div class="extra content">
+          <div class="description">
+            {% if glass.discount > 0 %}
+
+            <h1>
+              TK
+              <s style="color: red"> {{glass.price}} </s>
+              &nbsp; {{glass.code|slice:"20:"}}  &nbsp; &#903;&nbsp;
+              {{glass.productStatus}}
+            </h1>
+
+            {% else %}
+            <h1>TK {{glass.price}}&nbsp; &#903;&nbsp;
+              {{glass.productStatus}}</h1>
+            {% endif %}
+          </div>
+          <br />
+
+          <div class="row">
+            <div class="col-sm-2">
+              <!-- --------------------like ---------------------------->
+              <form
+                action="{% url 'add-wishlist' %}"
+                class="ui form"
+                enctype="multipart/form-data"
+                method="POST"
+                id="like-form"
+              >
+                {% csrf_token %}
+
+                <div class="ui labeled button" tabindex="0">
+                  <div class="ui labeled button" tabindex="0">
+                    <button
+                      class="ui primary button like-btn"
+                      type="submit"
+                      name="like-btn"
+                      value="liking-system"
+                      id="like-{{glass.id}}-{{profile.id}}"
+                    >
+                      {% if profile not in glass.liked.all %} Like {% else %}
+                      Unlike {% endif %}
+                    </button>
+
+                    <a
+                      id="likesCount-{{glass.id}}"
+                      class="ui basic primary left pointing label"
+                    >
+                      {{glass.liked.count}}
+                    </a>
+                  </div>
+                </div>
+              </form>
+
+              <!-- --------------------like Close ---------------------------->
+            </div>
+
+            <div class="col-sm-3">
+              <!-- --------------------Cart  ---------------------------->
+
+              <form
+                action="{% url 'add-cart' %}"
+                class="ui form"
+                enctype="multipart/form-data"
+                method="POST"
+                id="cart-form"
+              >
+                {% csrf_token %}
+
+                <button
+                  class="ui primary button cart-btn"
+                  type="submit"
+                  name="cart-btn"
+                  value="cart-system"
+                  id="cart-{{glass.id}}-{{profile.id}}"
+                >
+                  {% if profile not in glass.cart.all %} Add to Cart {% else %}
+                  Remove Cart {% endif %}
+                </button>
+              </form>
+              <!-- --------------------cart Close ---------------------------->
+            </div>
+
+            <div class="col-sm-4" style="margin: 0px 0px 0px -45px">
+              
+              <a href="https://www.youtube.com/results?search_query={{glass.title|slugify}}" target="_blank" rel="noopener noreferrer">
+              <button class="ui primary button">
+                <i class="search icon"></i>
+
+                Search in Youtube
+              </button>
+            </a>
+            </div>
+
+
+            <div class="col-sm-3" style="margin: 0px 0px 0px -50px">
+              <a
+                target="_blank"
+                href="https://www.google.com/search?q={{glass.title|slugify}}"
+              >
+                <button class="ui primary button">
+                  <i class="search icon"></i>
+
+                  Search in Web
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title">
+            <h2>Product Details</h2>
+          </div>
+          {% for specification in specifications %}
+          <li>{{specification}}</li>
+          {% endfor %}
+        </div>
+      </div>
+      <div>
+        <form
+          id=""
+          action="{% url 'comment-post' glass.id %}"
+          method="POST"
+          class="ui form my-3"
+        >
+          {% csrf_token %}
+          <input
+            placeholder="Add Your Comment"
+            class="ui input"
+            id="id_comment-box"
+            type="text"
+            name="commnet-box"
+            style="max-width: 1070px"
+          />
+          {% if profile == "AnonymousUser" %}
+          <a
+            href="{% url 'login-account' %}"
+            type="button"
+            class="ui primary button"
+          >
+            Add Comment Publicly
+          </a>
+          {% else %}
+          <button
+            type="submit"
+            name="submit_c_form"
+            class="ui primary button mt-2"
+          >
+            Add a Review
+          </button>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+
+    <div class="col-sm-3">
+      <h1 class="mx-2">Product Reviews({{allCommnets|length}})</h1>
+      <hr />
+      {% if allCommnets|length > 0 %} {% for comment in allCommnets %}
+      <div class="ui comments">
+        <div class="comment">
+          <a class="avatar">
+            <img src="{{comment.user.avatar.url}}" />
+          </a>
+          <div class="content">
+            <a class="author" href="">{{comment.user.user.username}}</a>
+            <div class="metadata">
+              <div class="date">{{comment.created}}</div>
+            </div>
+            <div class="text">
+              <p>
+                {{comment.body}} {% if profile == comment.user %}
+
+                <a href="{% url 'delete-comment' comment.id  glass.id %}">
+                  <i class="red trash icon"></i>
+                </a>
+
+                {% endif %}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %} {% else %}
+      <div>
+        <p style="text-align: center">Be the First One to do a Review</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  <h1>More Products</h1>
+  <hr />
+
+  <div class="row" style="margin: 0px 1px 0px 1px">
+    {% for product in moreProducts %}
+    <div class="container col-md-3">
+      <div class="ui card mt-4">
+        <a
+          class="image1"
+          href="{% url 'show-product' product.id product.title|slugify %}"
+        >
+          <img src="{{product.image1.url}}" height="120px" width="100%" />
+        </a>
+        <div class="content">
+          <a
+            class="header"
+            href="{% url 'show-product' product.id product.title|slugify %}"
+            >{{product.title|slice:"0:25"}}....</a
+          >
+          <div class="meta">
+            <span class="date">{{product.discount}}% Discount</span>
+          </div>
+          <div class="description">
+            {% if product.discount > 0 %}
+
+            <h3>
+              <s style="color: red"> TK {{product.price}} </s>
+              &nbsp; {{product.code|slice:"20:"}}
+            </h3>
+
+            {% else %}
+            <h3>TK {{product.price}}</h3>
+            {% endif %}
+          </div>
+        </div>
+        <div class="extra content">
+          <div class="ui vertical animated button" tabindex="0">
+            <div class="hidden content">Like</div>
+            <div class="visible content">
+              <i class="heart icon"></i>
+            </div>
+          </div>
+          <button class="ui button">
+            <a href="{% url 'show-product' product.id product.title|slugify %}"
+              >See Details</a
+            >
+          </button>
+        </div>
+      </div>
+    </div>
+
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %} {% block scripts %}
+<script>
+  document.getElementById("id_comment-box").required = true;
+</script>
+{% include 'addWishlist.html' %} {% include 'addCartlist.html' %}
+ {% endblock scripts %}

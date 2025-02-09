@@ -1,0 +1,29 @@
+<script>
+    $(document).ready(function () {
+      $(".cart-btn").click(function (e) {
+        e.preventDefault();
+  
+        let btnID = $(this).attr("id");
+        let url = $("#cart-form").attr("action");
+        let list = btnID.split("-");
+        console.log(list);
+  
+        $.ajax({
+          type: "POST",
+          url: url,
+          data: {
+            csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+            postID: list[1],
+            profileID: list[2],
+          },
+          success: function (response) {
+            $(`#${btnID}`).text(response.lvalue);
+          },
+          error: function (response) {
+            $("#ErrorbtnLogin").click();
+          },
+        });
+      });
+    });
+  </script>
+  

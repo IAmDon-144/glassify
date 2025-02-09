@@ -1,0 +1,77 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container">
+  <form
+    class="form-group"
+    action="{% url 'edit-profile' profileID %}"
+    method="POST"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title">
+          <h1>Edit Your Profile</h1>
+          <p>
+            Before Apply Changes Make Sure You have Given Correct Location ,
+            Eye power and a Profile Picture With Two Eyes Visible*
+          </p>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="mt-2">
+              <label for="">Name:</label>
+              {{form.name}}
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="mt-2">
+              <label for="">Address:</label>
+              {{form.address}}
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-2">
+          <label for="">Avatar:</label>
+          {{form.avatar}}
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="mt-2">
+              <label for="">Power:</label>
+              {{form.power}}
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="mt-2">
+              <label for="">Phone Number:</label>
+              {{form.phoneNum}}
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="ui blue basic button mt-2">
+          Apply Changes
+        </button>
+        <a href="{% url 'my-profile' %}">
+          <button type="button" class="ui blue basic button mt-2">
+            Back to Profile
+          </button>
+        </a>
+      </div>
+    </div>
+  </form>
+</div>
+
+{% endblock content %} {% block scripts %}
+<script>
+  document.getElementById("id_name").classList.add("form-control");
+  document.getElementById("id_address").classList.add("form-control");
+  document.getElementById("id_avatar").classList.add("form-control");
+  document.getElementById("id_phoneNum").classList.add("form-control");
+  document.getElementById("id_power").classList.add("form-control");
+</script>
+{% endblock scripts %}

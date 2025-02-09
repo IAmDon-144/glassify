@@ -1,0 +1,41 @@
+<script>
+  $(document).ready(function () {
+    $(".like-btn").click(function (e) {
+      e.preventDefault();
+
+      let btnID = $(this).attr("id");
+      let url = $("#like-form").attr("action");
+      let list = btnID.split("-");
+      console.log(list);
+
+      let likes = $(`#likesCount-${list[1]}`).text().trim();
+      let totalLikes = parseInt(likes);
+
+      $.ajax({
+        type: "POST",
+        url: url,
+        data: {
+          csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+          postID: list[1],
+          profileID: list[2],
+        },
+        success: function (response) {
+          $(`#${btnID}`).text(response.lvalue);
+
+          if (response.lvalue === "Like") {
+            totalLikes -= 1;
+
+            $(`#likesCount-${list[1]}`).text(totalLikes);
+          } else {
+            totalLikes += 1;
+
+            $(`#likesCount-${list[1]}`).text(totalLikes);
+          }
+        },
+        error: function (response) {
+          $("#ErrorbtnLogin").click();
+        },
+      });
+    });
+  });
+</script>

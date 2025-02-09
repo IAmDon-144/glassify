@@ -1,0 +1,176 @@
+{% load static %}
+
+<style>
+  .navbar-brand {
+    margin: 0px 100px 0px 15px;
+  }
+  .sr-only {
+    margin: 0px 15px 0px 10px;
+  }
+  .navbar2 {
+    height: 60px;
+  }
+  .search {
+    width: 750px;
+    margin: 0px 10px 0px 0px;
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg fixed-top   bg-dark">
+  <div class="container">
+    <div class="w-100 d-flex justify-content-between">
+      <div>
+        <i class="fa-solid fa-envelope text-light contact-info"></i>
+        <a
+          href=""
+          class="navbar-sm-brand text-light text-decoration-none contact-info"
+        >
+          info@glassify.com
+        </a>
+        <i class="fa-solid fa-phone contact-info text-light"></i>
+        <a
+          href=""
+          class="navbar-sm-brand text-white text-decoration-none contact-info"
+        >
+          -01814210029
+        </a>
+      </div>
+      <div>
+        <a href="{% url 'help' %}" class="text-white">
+          <i class="fa-brands fa-facebook me-2">Help</i></a
+        >
+        <a href="{%url 'contact' %}" class="text-white">
+          <i class="fa-brands fa-instagram me-2">Contact</i></a
+        >
+        <a href="{% url 'about' %}" class="text-white">
+          <i class="fa-brands fa-linkedin me-2">About</i></a
+        >
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Navbar2 -->
+
+<nav class="navbar navbar-expand-lg navbar-light fixed-top  bg-light navbar2" style="margin-top:30px ;">
+  <a class="navbar-brand" href="{% url 'home' %}"
+    ><img
+      src="{% static 'images/GlassifyLogo.png' %}"
+      alt="home"
+      style="height: 45px"
+  /></a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-telephone-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"
+            />
+          </svg>
+          <span class="sr-only" style="font-size: larger; font-weight: 1000"
+            >01814210029</span
+          ></a
+        >
+      </li>
+
+      <li class="nav-item active">
+        <form class="form-inline" method="GET" action="{% url 'home' %}">
+          {{myfilter.form.title}}
+        </form>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'wishlist' %}" style="margin-right: 10px">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-heart-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+            />
+          </svg>
+          Wishlist</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'cartlist' %}" style="margin-right: 10px">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-cart-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
+            />
+          </svg>
+          Cart</a
+        >
+      </li>
+
+      {% if request.user.is_authenticated%}
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url 'my-profile' %}">
+          <i class="user icon"></i>
+          Profile</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url 'logout-account' %}">
+          <i class="user icon"></i>
+          Logout</a
+        >
+      </li>
+
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'login-account' %}">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'register-account' %}">Signup</a>
+      </li>
+
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+
+{% block scripts %}
+
+<script>
+  $(document).ready(function () {
+    document.getElementById("id_title").className = "form-control";
+    document.getElementById("id_title").style.width = "500px";
+    document.getElementById("id_title").placeholder = "Search";
+  });
+</script>
+
+{% endblock scripts %}

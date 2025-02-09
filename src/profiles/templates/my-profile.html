@@ -1,0 +1,56 @@
+{% extends 'base.html' %} {% block content%}
+
+<div class="container" style="width: 880px">
+  <div class="card">
+    <img
+      class="rounded-circle article-img mx-auto d-block my-2"
+      style="height: 150px; width: 150px"
+      src="{{profile.avatar.url}}"
+    />
+    <div class="card-title">
+      <h1 style="text-align: center">
+        {{profile.user.username}}
+        
+        <a href="{% url 'edit-profile' profile.id %}">
+          <button class="tiny ui blue basic button">
+            <i class="edit icon"></i>Edit
+          </button>
+        </a>
+
+      </h1>
+    </div>
+    <p1 style="text-align: center">{{profile.user.email}}</p1>
+    <p1 style="text-align: center">{{profile.user.created_at}}(Joined)</p1>
+
+    <div class="mx-2">
+      <hr />
+      <h5 style="text-align: center">Personal Details:</h5>
+      <table class="table table-bordered" style="text-align: center">
+        <tbody>
+          <tr>
+            <td>Name</td>
+            <td>{{profile.name}}</td>
+          </tr>
+
+          <tr>
+            <td>Address</td>
+            <td>{{profile.address}}</td>
+          </tr>
+          <tr>
+            <td>Power</td>
+            <td>{{profile.power}} D</td>
+          </tr>
+          <tr>
+            <td>Phone Number</td>
+            <td>+{{profile.phoneNum}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <br />
+</div>
+
+
+
+{% endblock content%}

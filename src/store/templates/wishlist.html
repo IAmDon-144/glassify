@@ -1,0 +1,100 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+<div class="container">
+  <h1>&#10084; Wishlist</h1>
+  <p>Your Liked Products Will Appear Here.</p>
+
+  <div class="row">
+    <div class="col-sm-6">
+      {% for wishlist in wishlists %}
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-2">
+              <a
+                href="{% url 'show-product' wishlist.id wishlist.title|slugify %}"
+              >
+                <img
+                  class="card-img"
+                  src="{{wishlist.image1.url}}"
+                  alt="Card image cap"
+                  style="height: 60px"
+                />
+              </a>
+            </div>
+            <div class="col-sm-7">
+              <h3>{{wishlist.title|slice:"0:50"}}</h3>
+              <h3 style="color: red">{{wishlist.price}} TK</h3>
+            </div>
+
+            <div class="col-sm-3">
+              <form
+                action="{% url 'add-wishlist' %}"
+                class="ui form"
+                enctype="multipart/form-data"
+                method="POST"
+                id="like-form"
+              >
+                {% csrf_token %}
+
+                <div class="ui labeled button" tabindex="0">
+                  <div class="ui labeled button" tabindex="0">
+                    <button
+                      class="ui red button like-btn"
+                      type="submit"
+                      name="like-btn"
+                      value="liking-system"
+                      id="like-{{wishlist.id}}-{{profile.id}}"
+                    >
+                      {% if profile not in wishlist.liked.all %} Like {% else %}
+                      Unlike {% endif %}
+                    </button>
+
+                    <a
+                      id="likesCount-{{wishlist.id}}"
+                      class="ui basic primary left pointing label"
+                    >
+                      {{wishlist.liked.count}}
+                    </a>
+                  </div>
+                </div>
+              </form>
+
+              <form
+                action="{% url 'add-cart' %}"
+                class="ui form mt-2"
+                enctype="multipart/form-data"
+                method="POST"
+                id="cart-form"
+              >
+                {% csrf_token %}
+
+                <button
+                  class="ui primary button cart-btn"
+                  type="submit"
+                  name="cart-btn"
+                  value="cart-system"
+                  id="cart-{{wishlist.id}}-{{profile.id}}"
+                >
+                  {% if profile not in wishlist.cart.all %} Add to Cart {% else %} Remove Cart {% endif %}
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      {% endfor %}
+    </div>
+
+    <div class="col-sm-6">
+      <img
+        src="{% static 'images/wishlist.webp' %}"
+        alt=""
+        height="490px"
+        width="115%"
+      />
+    </div>
+  </div>
+</div>
+{% include 'addWishlist.html' %} {% include 'addCartlist.html' %} 
+{% endblock content %}
